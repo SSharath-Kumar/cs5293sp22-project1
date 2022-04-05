@@ -44,14 +44,15 @@ Hence the redaction in the project is also not 100% accurate.**
 
 Arguments and corresponding functionalities programmed:
 
-**--INPUTS**
+# **--INPUTS**
 
 A glob is provided as the input for the redactor. 
-Assuming that all the files are in a separate directory (input), the sample value for input is **\<file extension>
+Assuming that all the files are in a separate directory (input), the sample value for input is *\<file extension>
+
 All matching file names are picked up  and iterated upon to redact information.
 
 
-**--NAME**
+# **--NAME**
 
 Names of people are only considered for redaction. 
 
@@ -66,11 +67,13 @@ To increase accuracy, NLTK is also used to find any other names missed.
 The data is tokenized into chunks (ne_chunk) and all chunks with the PERSON label are redacted using replace.
 
 
-**--DATES**
+# **--DATES**
 
-Date formats considered for redaction: 
+**Date formats considered for redaction:**
 XX/XX/XXXX example: 04/05/2022
+
 X/X/XXXX example: 4/5/2022
+
 Date formats recongized by spacy 
 
 Function: **redact_dates**
@@ -82,15 +85,22 @@ All entities with the label DATE are redacted using replace.
 
 To handle the 2 other formats of dates, regular expressions are used to redact dates in such formats.
 
-**--PHONES**
+# **--PHONES**
 
-Phone number formats considered for redaction:
+**Phone number formats considered for redaction:**
+
 XXX-XXX-XXXX
+
 XXX.XXX.XXXX
+
 (XXX) XXX-XXXX
+
 XXX.XXX-XXXX
+
 XXX.XXX.XXXX
+
 XXX XXX XXXX
+
 XXXXXXXXXX
 
 Function: **redact_phones**
@@ -99,7 +109,7 @@ Function: **redact_phones**
 
 All the above patterns are found in the files using regular expressions and redacted using replace.
 
-**--GENDERS**
+# **--GENDERS**
 
 The following words are considered to be gender revealing and are redacted.
 
@@ -115,7 +125,7 @@ If the word matches, it is then replaced using re.sub instead of replace to avoi
 Example: Refresher -> contains she and he. Using a regex with word boundaries would make sure the exact word is redacted.
 
 
-**--ADDRESS**
+# **--ADDRESS**
 
 Note: Addresses and Locations recognized by spacy are only considered for redaction
 
@@ -126,7 +136,7 @@ Function: **redact_address**
 Using spacy on the data from the input file, <>
 All entities with the labels GPE and LOC are redacted using replace.
 
-**--CONCEPT**
+# **--CONCEPT**
 
 Wordnet is used for redacting similar words. All synonyms or similar words recognized by wordnet are only redacted.
 
@@ -137,20 +147,20 @@ Function: **redact_concepts**
 The synonyms for the given concept are fetched from wordnet and stored in an array.
 The data from the input file is tokenized into sentences and words. If the word matches with any of the synonyms, the whole sentence is redacted using replace
 
-**--STATS**
+#**--STATS**
 
 For each of the argument mentioned above, the count of redaction is incremented by 1 each time redaction occurs either by replace or re.sub().
 These statistics are either written to a file or written to stdout/stderr based on the input provided. 
 
 Note: stats are always written to the stats directory and the file extension is .log
 
-**--OUTPUT**
+# **--OUTPUT**
 
 The extensions of the files provided as input are extracted from the argument initially.
 This extension is replaced by .redacted. As the files are picked from input directory, 'input\' is present in the file names.
 This part of the file names is trimmed and the rest of the file name is used to create the output file to which the redacted data is written to.
 
-**unicode_block_gen:**
+# **unicode_block_gen:**
 
 *input: length (length of redacted block to be generated)*
 
