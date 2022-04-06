@@ -5,13 +5,13 @@ def test_redaction():
     redacted_files = []
 
     # Look for redacted files in current directory
-    redacted_files += glob.glob("*.redacted")
+    redacted_files += glob.glob("/home/sharath11397/cs5293sp22-project1/*.redacted")
 
     # Look for redacted files in any directories
-    redacted_files += glob.glob("\\*.redacted")
+    redacted_files += glob.glob("/home/sharath11397/cs5293sp22-project1/*/*.redacted")
 
     # Look for redacted files in any subdirectories
-    redacted_files += glob.glob("\\**\\*.redacted")
+    redacted_files += glob.glob("/home/sharath11397/cs5293sp22-project1/*/*/*.redacted")
 
     # print(redacted_files)
     counter = []

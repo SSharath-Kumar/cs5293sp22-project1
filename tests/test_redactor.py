@@ -4,7 +4,7 @@ import glob
 test_files = []
 input_data = []
 # Get all text files from input folder
-test_files += glob.glob('*\\*.txt')
+test_files += glob.glob('/home/sharath11397/cs5293sp22-project1/tests/*.txt')
 
 for test_file in test_files:
     with open(test_file, 'r') as file:
