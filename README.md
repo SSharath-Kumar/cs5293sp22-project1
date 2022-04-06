@@ -37,7 +37,7 @@ The re module is used to perform regular expression operations
 
 # **Assumptions**
 
-Inputs: All input files are assumed to be text files with .txt extension placed a separate directory.
+All functionalities are tested using .txt files only.
 
 **As the redactions are done using spacy and NLTK libraries, models provided by these llibraries are not 100% accurate.
 Hence the redaction in the project is also not 100% accurate.**
@@ -152,9 +152,8 @@ The data from the input file is tokenized into sentences and words. If the word 
 ## **--STATS**
 
 For each of the argument mentioned above, the count of redaction is incremented by 1 each time redaction occurs either by replace or re.sub().
+Example: If names flag is passed and redaction is done for 4 names in a file, the count would be 4 even if multiple instances of the name are redacted.  
 These statistics are either written to a file or written to stdout/stderr based on the input provided. 
-
-Note: stats are always written to the stats directory and the file extension is .log
 
 ## **--OUTPUT**
 
@@ -211,6 +210,13 @@ Data returned from the function is compared with the actual data from the file. 
 data from text file is read and passed as an input to the redact_concepts function. 
 Data returned from the function is compared with the actual data from the file. If both strings are same, the test case fails.
 
+## Addendum ##
+
+* Stats show the number of times the redact action is called for a flag rather than the exact number of redactions done.
+* Path conventions are set as per Linux systems and not Windows
+* Files required for testing are present in 'tests' directory
+* Reiterating - All redactions done are not 100% accurate, conditions for redaction are specified for each flag above!
+
 - - - - -
 
 # Steps for local deployment:
@@ -218,7 +224,10 @@ Data returned from the function is compared with the actual data from the file. 
 
 2] Install the required dependencies using the command: pipenv install
 
+*Possible Bug: Install Spacy manually using > pipenv install spacy*
+
 # Running the project:
+Sample command :
 pipenv run python .\redactor.py --input *\*.txt --names --dates --phones --address --genders --concept depression --output redacted --stats redaction_stats
 
 # Runnning the test cases:
