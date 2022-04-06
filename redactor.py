@@ -92,7 +92,7 @@ def main(args):
     elif args.stats == 'stderr':
         sys.stderr.write('\n'.join(file_stats))
     else:
-        with open('stats\\' + args.stats + '.log', 'w') as stats_file:
+        with open(args.stats + '.log', 'w') as stats_file:
             stats_file.writelines('\n'.join(file_stats))
 
 
