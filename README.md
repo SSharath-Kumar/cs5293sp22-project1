@@ -37,10 +37,11 @@ The re module is used to perform regular expression operations
 
 # **Assumptions**
 
-Inputs: All input files are assumed to be a separate directory 
+Inputs: All input files are assumed to be text files with .txt extension placed a separate directory.
 
 **As the redactions are done using spacy and NLTK libraries, models provided by these llibraries are not 100% accurate.
 Hence the redaction in the project is also not 100% accurate.**
+
 
 ## Arguments and corresponding functionalities programmed: ##
 
@@ -51,6 +52,9 @@ Assuming that all the files are in a separate directory (input), the sample valu
 
 All matching file names are picked up and iterated upon to redact information.
 
+**Error Handling - **
+
+A try catch block is in place to display an error message if any file is not readable. This has been tested using a locked PDF file. 
 
 ## **--NAME**
 
@@ -60,8 +64,7 @@ Function: **redact_names**
 
 *input: string (file data to be passed as a string)*
 
-Using spacy on the data from the input file, <>
-All entities with the label PERSON are redacted using replace.
+Using spacy tokenized the data from the input file and all entities with the label PERSON are redacted using replace.
 
 To increase accuracy, NLTK is also used to find any other names missed. 
 The data is tokenized into chunks (ne_chunk) and all chunks with the PERSON label are redacted using replace.
@@ -81,8 +84,7 @@ Function: **redact_dates**
 
 *input: string (file data to be passed as a string)*
 
-Using spacy on the data from the input file, <>
-All entities with the label DATE are redacted using replace.
+Using spacy tokenized the data from the input file and all entities with the label DATE are redacted using replace.
 
 To handle the 2 other formats of dates, regular expressions are used to redact dates in such formats.
 
@@ -115,7 +117,7 @@ All the above patterns are found in the files using regular expressions and reda
 The following words are considered to be gender revealing and are redacted.
 
 ['grandfather', 'grandmother', 'father', 'mother', 'male', 'female', 'sister', 'brother', 'wife', 'husband', 'son', 'daughter', 'nephew', 'niece',
- 'grandson', 'granddaughter', 'stepmother', 'stepfather', 'godfather', 'godmother', he', 'him', 'his', 'she', 'her', 'they', 'them', 'their']
+ 'grandson', 'granddaughter', 'stepmother', 'stepfather', 'godfather', 'godmother', he', 'him', 'his', 'she', 'her']
 
 Function: **redact_genders**
 
@@ -134,8 +136,7 @@ Function: **redact_address**
 
 *input: string (file data to be passed as a string)*
 
-Using spacy on the data from the input file, <>
-All entities with the labels GPE and LOC are redacted using replace.
+Using spacy tokenized the data from the input file and all entities with the labels GEP and LOC are redacted using replace.
 
 ## **--CONCEPT**
 
@@ -172,12 +173,13 @@ This function generates a string of the unicode block of the provided length. Th
 
 ## *test_redaction:*
 
-NOTE: This test case is to be run after running the redactor atleast once.
+**NOTE: This test case is to be run after running the redactor atleast once.**
 
 The test case looks for files with the .redacted extension. All such files are read and checked for the number of unicode characters.
 The test case fails if it doesnot contain any unicode characters.
+----
 
-NOTE: Below test cases pick all the text files from the input directory.
+**NOTE: Below test cases pick all the text files from the input directory.**
 
 ## *test_redact_names*
 
@@ -208,6 +210,8 @@ Data returned from the function is compared with the actual data from the file. 
 
 data from text file is read and passed as an input to the redact_concepts function. 
 Data returned from the function is compared with the actual data from the file. If both strings are same, the test case fails.
+
+- - - - -
 
 # Steps for local deployment:
 1] Clone the repository using the below command git clone https://github.com/SSharath-Kumar/cs5293sp22-project1
