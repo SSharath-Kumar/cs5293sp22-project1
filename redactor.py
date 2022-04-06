@@ -71,7 +71,7 @@ def main(args):
                 os.mkdir(args.output)
 
             # Setting up file name
-            f_name = data_file.name.split('\\')[-1] + '.redacted'
+            f_name = data_file.name.split('/')[-1] + '.redacted'
 
             # Setting up file name
             # for ext in extensions:
@@ -80,7 +80,7 @@ def main(args):
             # f_name = f_name[f_name.find('\\') + 1:]
 
             # Write redacted data to file
-            with open(args.output + '\\' + f_name, 'w', encoding='utf-8') as out_file:
+            with open(args.output + '/' + f_name, 'w', encoding='utf-8') as out_file:
                 out_file.writelines(data)
 
             # Update Statistics
