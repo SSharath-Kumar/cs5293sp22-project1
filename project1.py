@@ -3,15 +3,16 @@ import nltk
 import re
 from nltk.corpus import wordnet
 from nltk import word_tokenize, sent_tokenize
+import pyap
 
 # For using chunks
-nltk.download('punkt',quiet=True)
-nltk.download('averaged_perceptron_tagger',quiet=True)
-nltk.download('maxent_ne_chunker',quiet=True)
-nltk.download('words',quiet=True)
+nltk.download('punkt', quiet=True)
+nltk.download('averaged_perceptron_tagger', quiet=True)
+nltk.download('maxent_ne_chunker', quiet=True)
+nltk.download('words', quiet=True)
 # For Concepts
-nltk.download('wordnet',quiet=True)
-nltk.download('omw-1.4',quiet=True)
+nltk.download('wordnet', quiet=True)
+nltk.download('omw-1.4', quiet=True)
 
 
 # Block to generate Unicode characters of given length
@@ -141,15 +142,15 @@ def redact_genders(data):
                     'male', 'female', 'man', 'woman', 'manly', 'manlike', 'womanly', 'womanlike',
                     'sister', 'brother', 'wife', 'wives', 'husband', 'bride', 'groom',
                     'son', 'daughter', 'nephew', 'niece', 'grandson', 'granddaughter',
-                    'stepmother', 'stepfather', 'stepson', 'stepdaughter', 'stepbrother','stepsister',
+                    'stepmother', 'stepfather', 'stepson', 'stepdaughter', 'stepbrother', 'stepsister',
                     'he', 'him', 'himself', 'his', 'she', 'her', 'herself', 'guy', 'gal', 'girl', 'boy',
                     'mister', 'mr', 'miss', 'ms', 'missus', 'mrs', 'mrs', "ma'am",
-                    'king', 'queen', 'prince', 'princess', 'uncle', 'aunt','godfather', 'godmother',
+                    'king', 'queen', 'prince', 'princess', 'uncle', 'aunt', 'godfather', 'godmother',
                     'gentleman', 'gentlemen', 'lady', 'ladies', 'boyfriend', 'girlfriend']
 
     redactions = 0
 
-    words_to_redact = []
+    # words_to_redact = []
 
     for sent in sent_tokenize(data):
         for word in word_tokenize(sent):
@@ -170,12 +171,25 @@ def redact_address(data):
     doc = nlp(data)
     redactions = 0
     # redacted_address = []
+
+    # Identify addresses using pyap
+    addresses = pyap.parse(data, country='US')
+    for address in addresses:
+        str_address = str(address)
+        red_address = str_address.split(',')
+        for s in red_address:
+            s = s.strip()
+            data = data.replace(s, unicode_block_gen(len(s)))
+            redactions += 1
+
+    # Backup block using spacy
     for entity in doc.ents:
         if entity.label_ == 'GPE' or entity.label_ == 'LOC':
             # print(entity.text)
             # redacted_address.append(entity.text)
             data = data.replace(entity.text, unicode_block_gen(len(entity.text)))
             redactions += 1
+
     return data, redactions
     # return redacted_address
 
@@ -192,8 +206,8 @@ def redact_concepts(data, concept):
     sysn = wordnet.synsets('depression')
     for i in sysn:
         for j in i.hyponyms():
-            for l in j.lemma_names():
-                synonyms.append(l)
+            for lemma in j.lemma_names():
+                synonyms.append(lemma)
 
     for sent in sent_tokenize(data):
         for word in word_tokenize(sent):
