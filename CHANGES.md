@@ -1,28 +1,15 @@
 # Changes
 
-Issues reported:
-
-1. Moderate features for
-- Gender
-- Dates
-- Concept
+* Moderate features for Gender (-2) --- Added keywords to expand the redaction criteria. (Previously used 20+ keywords, updated to 70+)
 
 
-2. Small amount of features for *Addresses*
+* Moderate features for Dates (-2) --- Added one more regex pattern to redact dates in (xx/xx/xx) format.
 
-## Fixes Done
 
-### Redaction of gender Revealing Terms
-Added keywords to expand the redaction criteria. (Previously used 20+ keywords, updated to 70+)
-
-### Redaction of dates
-Added one more regex pattern to redact dates in (xx/xx/xx) format.
-
-### Redaction of sentences related to given concept
-Used *hyponymns* from wordnet to expand the redaction criteria.
+* Moderate features for Concept (-2) --- Used *hyponymns* from wordnet to expand the redaction criteria.
 Converted each word in the sentence to lowercase for comparison and redaction.
 
-### Redaction of addresses
-Used the *pyap* library to identify addresses in the data.
 
-*Note: Redaction is still buggy, postal code is not being redacted.*
+* Small amount of features for *Addresses* (-3) --- Used the *pyap* library to identify addresses in the data.
+
+*Note: Address Redaction is still buggy, postal code is not being redacted.*
