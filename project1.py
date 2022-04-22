@@ -67,8 +67,8 @@ def redact_dates(data):
             redactions += 1
 
     # To handle other occurrences
-    # Format: 04/01/2022
-    date_list1 = re.match(r"\d{2}/\d{2}/\d{4}", data)
+    # Format: 04/01/2022 & 04/01/22
+    date_list1 = re.match(r"\d{2}/\d{2}/\d{2,4}", data)
     if date_list1 is not None:
         for occurrence in date_list1:
             # dates_to_redact.append(occurrence)
@@ -79,14 +79,6 @@ def redact_dates(data):
     date_list2 = re.match(r"\d/\d/\d{4}", data)
     if date_list2 is not None:
         for occurrence in date_list2:
-            # dates_to_redact.append(occurrence)
-            data = data.replace(occurrence, unicode_block_gen(len(occurrence)))
-            redactions += 1
-
-    # Format: 04/01/22
-    date_list3 = re.match(r"\d{2}/\d{2}/\d{2}", data)
-    if date_list3 is not None:
-        for occurrence in date_list3:
             # dates_to_redact.append(occurrence)
             data = data.replace(occurrence, unicode_block_gen(len(occurrence)))
             redactions += 1
@@ -149,11 +141,11 @@ def redact_genders(data):
                     'male', 'female', 'man', 'woman', 'manly', 'manlike', 'womanly', 'womanlike',
                     'sister', 'brother', 'wife', 'wives', 'husband', 'bride', 'groom',
                     'son', 'daughter', 'nephew', 'niece', 'grandson', 'granddaughter',
-                    'stepmother', 'stepfather', 'godfather', 'godmother',
+                    'stepmother', 'stepfather', 'stepson', 'stepdaughter', 'stepbrother','stepsister',
                     'he', 'him', 'himself', 'his', 'she', 'her', 'herself', 'guy', 'gal', 'girl', 'boy',
-                    'mister', 'mr', 'miss', 'ms', 'missus', 'mrs', 'mrs',
-                    'king', 'queen', 'prince', 'princess', 'uncle', 'aunt',
-                    'gentleman', 'gentlemen', 'lady', 'ladies', 'transgender', 'gay']
+                    'mister', 'mr', 'miss', 'ms', 'missus', 'mrs', 'mrs', "ma'am",
+                    'king', 'queen', 'prince', 'princess', 'uncle', 'aunt','godfather', 'godmother',
+                    'gentleman', 'gentlemen', 'lady', 'ladies', 'boyfriend', 'girlfriend']
 
     redactions = 0
 
@@ -197,10 +189,16 @@ def redact_concepts(data, concept):
         for lemma in syn.lemmas():
             synonyms.append(lemma.name())
 
+    sysn = wordnet.synsets('depression')
+    for i in sysn:
+        for j in i.hyponyms():
+            for l in j.lemma_names():
+                synonyms.append(l)
+
     for sent in sent_tokenize(data):
         for word in word_tokenize(sent):
             for syn in synonyms:
-                if syn == word:
+                if syn.lower() == word.lower():
                     # sentences_to_redact.append(sent)
                     data = data.replace(sent, unicode_block_gen(len(sent)))
                     redactions += 1
