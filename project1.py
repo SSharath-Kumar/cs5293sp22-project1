@@ -83,6 +83,14 @@ def redact_dates(data):
             data = data.replace(occurrence, unicode_block_gen(len(occurrence)))
             redactions += 1
 
+    # Format: 04/01/22
+    date_list3 = re.match(r"\d{2}/\d{2}/\d{2}", data)
+    if date_list3 is not None:
+        for occurrence in date_list3:
+            # dates_to_redact.append(occurrence)
+            data = data.replace(occurrence, unicode_block_gen(len(occurrence)))
+            redactions += 1
+
     return data, redactions
     # return dates_to_redact
 
@@ -136,10 +144,17 @@ def redact_phones(data):
 
 
 def redact_genders(data):
-    gender_words = ['grandfather', 'grandmother', 'father', 'mother', 'male', 'female',
-                    'sister', 'brother', 'wife', 'husband', 'son', 'daughter', 'nephew', 'niece',
-                    'grandson', 'granddaughter', 'stepmother', 'stepfather', 'godfather', 'godmother',
-                    'he', 'him', 'his', 'she', 'her']
+    gender_words = ['grandfather', 'grandmother', 'grandpa', 'grandma',
+                    'father', 'dad', 'mother', 'mom', 'mommy', 'mummy', 'mama',
+                    'male', 'female', 'man', 'woman', 'manly', 'manlike', 'womanly', 'womanlike',
+                    'sister', 'brother', 'wife', 'wives', 'husband', 'bride', 'groom',
+                    'son', 'daughter', 'nephew', 'niece', 'grandson', 'granddaughter',
+                    'stepmother', 'stepfather', 'godfather', 'godmother',
+                    'he', 'him', 'himself', 'his', 'she', 'her', 'herself', 'guy', 'gal', 'girl', 'boy',
+                    'mister', 'mr', 'miss', 'ms', 'missus', 'mrs', 'mrs',
+                    'king', 'queen', 'prince', 'princess', 'uncle', 'aunt',
+                    'gentleman', 'gentlemen', 'lady', 'ladies', 'transgender', 'gay']
+
     redactions = 0
 
     words_to_redact = []
